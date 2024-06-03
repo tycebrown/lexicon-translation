@@ -32,22 +32,39 @@
           partsOfSpeech: [
             ...baseFormTag.getElementsByTagName("PartOfSpeech"),
           ].map((partOfSpeechTag) => partOfSpeechTag.textContent),
-          lexMeanings: [...baseFormTag.getElementsByTagName("LEXMeaning")].map(
-            (lexMeaningTag) => ({
-              id: lexMeaningTag.getAttribute("Id")?.slice(9, 12),
-              lexSenses: [
-                ...lexMeaningTag.getElementsByTagName("LEXSense"),
-              ].map((lexSenseTag) => ({
-                definitionLong:
-                  lexSenseTag.getElementsByTagName("DefinitionLong")[0]
-                    .textContent,
-                definitionShort:
-                  lexSenseTag.getElementsByTagName("DefinitionShort")[0]
-                    .textContent,
-                glosses: [...lexSenseTag.getElementsByTagName("Gloss")].map(
-                  (glossTag) => glossTag.textContent
-                ),
-              })),
+          meanings: [...baseFormTag.getElementsByTagName("LEXMeaning")].map(
+            (meaningTag) => ({
+              id: meaningTag.getAttribute("Id")?.slice(9, 12),
+              domains: [...meaningTag.getElementsByTagName("LEXDomain")].map(
+                (domainTag) => domainTag.textContent
+              ),
+              subDomains: [
+                ...meaningTag.getElementsByTagName("LEXSubDomain"),
+              ].map((subDomainTag) => subDomainTag.textContent),
+              coreDomains: [
+                ...meaningTag.getElementsByTagName("LEXCoreDomain"),
+              ].map((coreDomainTag) => coreDomainTag.textContent),
+              senses: [...meaningTag.getElementsByTagName("LEXSense")].map(
+                (senseTag) => ({
+                  definitionLong:
+                    senseTag.getElementsByTagName("DefinitionLong")[0]
+                      .textContent,
+                  definitionShort:
+                    senseTag.getElementsByTagName("DefinitionShort")[0]
+                      .textContent,
+                  glosses: [...senseTag.getElementsByTagName("Gloss")].map(
+                    (glossTag) => glossTag.textContent
+                  ),
+                  comments:
+                    senseTag.getElementsByTagName("Comments")[0].textContent,
+                })
+              ),
+              collocations: [
+                ...meaningTag.getElementsByTagName("LEXCollocation"),
+              ].map((collocationTag) => collocationTag.textContent),
+              references: [
+                ...meaningTag.getElementsByTagName("LEXReference"),
+              ].map((referenceTag) => referenceTag.textContent),
             })
           ),
         })

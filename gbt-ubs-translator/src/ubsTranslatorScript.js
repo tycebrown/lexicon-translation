@@ -19,6 +19,7 @@
   function toJSON(xmlDoc) {
     return {
       id: xmlDoc.documentElement.getAttribute("Id")?.slice(0, 6),
+      text: xmlDoc.documentElement.getAttribute("Lemma"),
       strongCodes: [...xmlDoc.getElementsByTagName("Strong")].map(
         (strongTag) => strongTag.textContent
       ),
@@ -27,11 +28,13 @@
       ),
       baseForms: [...xmlDoc.getElementsByTagName("BaseForm")].map(
         (baseFormTag) => ({
+          id: baseFormTag.getAttribute("Id")?.slice(6, 9),
           partsOfSpeech: [
             ...baseFormTag.getElementsByTagName("PartOfSpeech"),
           ].map((partOfSpeechTag) => partOfSpeechTag.textContent),
           lexMeanings: [...baseFormTag.getElementsByTagName("LEXMeaning")].map(
             (lexMeaningTag) => ({
+              id: lexMeaningTag.getAttribute("Id")?.slice(9, 12),
               lexSenses: [
                 ...lexMeaningTag.getElementsByTagName("LEXSense"),
               ].map((lexSenseTag) => ({

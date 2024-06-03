@@ -12,24 +12,17 @@
   "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
-    "languages": [
-      {
-        "id": "xml",
-        "extensions": [".ubs"]
-      }
-    ],
     "customEditors": [
       {
         "viewType": "gbt.ubsTranslator",
         "displayName": "GBT UBS Translator",
         "selector": [
           {
-            "filenamePattern": "*.ubs"
+            "filenamePattern": "*.xml"
           }
         ]
       }
     ]
-
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

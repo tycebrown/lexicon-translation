@@ -34,7 +34,8 @@ const ubsTranslator_1 = __importDefault(require("./ubsTranslator"));
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 function activate(context) {
-    vscode.window.registerCustomEditorProvider("gbt.ubsTranslator", new ubsTranslator_1.default());
+    const ubsTranslatorRegistration = vscode.window.registerCustomEditorProvider("gbt.ubsTranslator", new ubsTranslator_1.default(context));
+    context.subscriptions.push(ubsTranslatorRegistration);
 }
 exports.activate = activate;
 // This method is called when your extension is deactivated

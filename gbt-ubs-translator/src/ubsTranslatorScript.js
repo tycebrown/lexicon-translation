@@ -1,25 +1,51 @@
 (function () {
-  console.log("Helo from script");
   window.addEventListener("message", (m) => {
-    console.log("++++++++++++++ message");
     switch (m.data.messageType) {
       case "updateDocument":
-        buildEditor(m.data.documentContent);
+        const xmlDoc = new DOMParser().parseFromString(
+          m.data.documentContent,
+          "text/xml"
+        );
+        buildEditor(toJSON(xmlDoc));
         break;
-      default:
-        console.log("Default");
     }
   });
 
-  function buildEditor(documentContent) {
-    const xmlDoc = new DOMParser().parseFromString(documentContent, "text/xml");
-    document.getElementById("main").innerHTML =
-      "<pre>" + JSON.stringify(toJSON(xmlDoc), null, 2) + "</pre>";
+  function buildEditor(documentData) {
+    const lemmaElement = document.createElement("span");
+    lemmaElement.innerText = documentData.lemma;
+
+    const strongCodesElement = document.createElement("span");
+    strongCodesElement.innerText = `(${documentData.strongCodes.join(", ")})`;
+
+    const entryWordElement = document.createElement("div");
+    entryWordElement.append(lemmaElement, " - ", strongCodesElement);
+
+    const baseFormsList = document.createElement("ul");
+    baseFormsList.append(
+      ...documentData.baseForms.map((baseForm) => {
+        const baseFormItem = document.createElement("li");
+        const meaningsList = document.createElement("ul");
+
+        meaningsList.append(
+          ...baseForm.meanings.map((meaning) => {
+            const meaningElement = document.createElement("div");
+            meaningElement.innerText = meaning.id;
+            return meaningElement;
+          })
+        );
+        baseFormItem.append(baseForm.partsOfSpeech.join(", "), meaningsList);
+        return baseFormItem;
+      })
+    );
+    const main = document.getElementById("main");
+    main.replaceChildren(entryWordElement, baseFormsList);
   }
+
   function toJSON(xmlDoc) {
     return {
       id: xmlDoc.documentElement.getAttribute("Id")?.slice(0, 6),
-      text: xmlDoc.documentElement.getAttribute("Lemma"),
+      lemma: xmlDoc.documentElement.getAttribute("Lemma"),
       strongCodes: [...xmlDoc.getElementsByTagName("Strong")].map(
         (strongTag) => strongTag.textContent
       ),

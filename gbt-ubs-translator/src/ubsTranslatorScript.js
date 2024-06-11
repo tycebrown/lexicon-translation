@@ -72,9 +72,6 @@
               ].map((coreDomainTag) => coreDomainTag.textContent),
               senses: [...meaningTag.getElementsByTagName("LEXSense")].map(
                 (senseTag) => ({
-                  definitionLong:
-                    senseTag.getElementsByTagName("DefinitionLong")[0]
-                      .textContent,
                   definitionShort:
                     senseTag.getElementsByTagName("DefinitionShort")[0]
                       .textContent,
@@ -85,9 +82,6 @@
                     senseTag.getElementsByTagName("Comments")[0].textContent,
                 })
               ),
-              collocations: [
-                ...meaningTag.getElementsByTagName("LEXCollocation"),
-              ].map((collocationTag) => collocationTag.textContent),
               references: [
                 ...meaningTag.getElementsByTagName("LEXReference"),
               ].map((referenceTag) => referenceTag.textContent),

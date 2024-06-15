@@ -3,6 +3,7 @@
 import * as vscode from "vscode";
 
 import UbsTranslatorProvider from "./ubsTranslator";
+import UbsViewerProvider from "./ubsViewer";
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -12,6 +13,12 @@ export function activate(context: vscode.ExtensionContext) {
     new UbsTranslatorProvider(context)
   );
   context.subscriptions.push(ubsTranslatorRegistration);
+
+  const ubsViewerRegistration = vscode.window.registerCustomEditorProvider(
+    "gbt.ubsViewer",
+    new UbsViewerProvider(context)
+  );
+  context.subscriptions.push(ubsViewerRegistration);
 }
 
 // This method is called when your extension is deactivated

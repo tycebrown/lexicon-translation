@@ -21,6 +21,15 @@
             "filenamePattern": "*.xml"
           }
         ]
+      },
+      {
+        "viewType": "gbt.ubsViewer",
+        "displayName": "GBT UBS Viewer",
+        "selector": [
+          {
+            "filenamePattern": "*.xml"
+          }
+        ]
       }
     ]
   },

@@ -31,11 +31,14 @@ exports.deactivate = exports.activate = void 0;
 // Import the module and reference it with the alias vscode in your code below
 const vscode = __importStar(require("vscode"));
 const ubsTranslator_1 = __importDefault(require("./ubsTranslator"));
+const ubsViewer_1 = __importDefault(require("./ubsViewer"));
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 function activate(context) {
     const ubsTranslatorRegistration = vscode.window.registerCustomEditorProvider("gbt.ubsTranslator", new ubsTranslator_1.default(context));
     context.subscriptions.push(ubsTranslatorRegistration);
+    const ubsViewerRegistration = vscode.window.registerCustomEditorProvider("gbt.ubsViewer", new ubsViewer_1.default(context));
+    context.subscriptions.push(ubsViewerRegistration);
 }
 exports.activate = activate;
 // This method is called when your extension is deactivated

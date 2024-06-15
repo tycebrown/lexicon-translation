@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 
-export default class UbsTranslatorProvider
+export default class UbsViewerProvider
   implements vscode.CustomTextEditorProvider
 {
   constructor(private readonly context: vscode.ExtensionContext) {}
@@ -11,14 +11,14 @@ export default class UbsTranslatorProvider
   ): Promise<void> {
     const scripts = [
       webviewPanel.webview.asWebviewUri(
+        vscode.Uri.joinPath(this.context.extensionUri, "src", "entryParser.js")
+      ),
+      webviewPanel.webview.asWebviewUri(
         vscode.Uri.joinPath(
           this.context.extensionUri,
           "src",
-          "ubsTranslatorScript.js"
+          "ubsViewerScript.js"
         )
-      ),
-      webviewPanel.webview.asWebviewUri(
-        vscode.Uri.joinPath(this.context.extensionUri, "src", "entryParser.js")
       ),
     ];
 

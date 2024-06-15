@@ -24,15 +24,15 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const vscode = __importStar(require("vscode"));
-class UbsTranslatorProvider {
+class UbsViewerProvider {
     context;
     constructor(context) {
         this.context = context;
     }
     async resolveCustomTextEditor(document, webviewPanel, token) {
         const scripts = [
-            webviewPanel.webview.asWebviewUri(vscode.Uri.joinPath(this.context.extensionUri, "src", "ubsTranslatorScript.js")),
             webviewPanel.webview.asWebviewUri(vscode.Uri.joinPath(this.context.extensionUri, "src", "entryParser.js")),
+            webviewPanel.webview.asWebviewUri(vscode.Uri.joinPath(this.context.extensionUri, "src", "ubsViewerScript.js")),
         ];
         webviewPanel.webview.options = { enableScripts: true };
         webviewPanel.webview.html = /*html*/ `
@@ -53,5 +53,5 @@ class UbsTranslatorProvider {
         });
     }
 }
-exports.default = UbsTranslatorProvider;
-//# sourceMappingURL=ubsTranslator.js.map
+exports.default = UbsViewerProvider;
+//# sourceMappingURL=ubsViewer.js.map

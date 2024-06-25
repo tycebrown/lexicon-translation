@@ -39,6 +39,7 @@ class UbsViewerProvider {
         <!DOCTYPE html>
         <html>
         <head>
+          <script src="https://cdn.jsdelivr.net/npm/@squaresapp/rawjs/raw.min.js"></script>
           ${scripts
             .map((uri) => /*html*/ `<script defer src="${uri}"></script>`)
             .join("\n")}

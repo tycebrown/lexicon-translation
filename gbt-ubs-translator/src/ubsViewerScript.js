@@ -6,72 +6,47 @@
           m.data.documentContent,
           "text/xml"
         );
-        buildViewer(entryParser.toJSON(xmlDoc));
+        document
+          .getElementById("main")
+          .replaceChildren(buildView(entryParser.toJSON(xmlDoc)));
         break;
     }
   });
 
-  function buildViewer(documentData) {
-    const main = document.getElementById("main");
-    main.append(document.createElement());
-    const entryContainerElement = document.createElement("div");
-    entryContainerElement.style = "margin: 44px 44px 0;";
-
-    const baseFormElement = document.createElement("div");
-
-    const lemmaElement = document.createElement("div");
-    lemmaElement.style = "font-size: 36px;";
-    lemmaElement.textContent = documentData.lemma;
-
-    const partOfSpeechElement = document.createElement("div");
-    partOfSpeechElement.style =
-      "margin-top: 32px; font-weight: bold; font-style: italic;";
-    partOfSpeechElement.textContent =
-      documentData.baseForms[0].partsOfSpeech[0];
-
-    const meaningElementsList = document.createElement("ol");
-    meaningElementsList.style = "margin: 24px 0 0 12px;";
-    meaningElementsList.append(
-      ...documentData.baseForms[0].meanings.map((meaning) => {
-        const meaningElement = document.createElement("li");
-        meaningElement.style = "margin-bottom: 32px;";
-
-        const definitionShortElement = document.createElement("div");
-        definitionShortElement.textContent = meaning.senses[0].definitionShort;
-
-        const glossesElement = document.createElement("div");
-        glossesElement.style = "margin-top: 8px; font-weight: bold;";
-        glossesElement.textContent =
-          "Glosses: " + meaning.senses[0].glosses.join(", ");
-
-        const referencesElement = document.createElement("div");
-        referencesElement.className = "reference-list";
-        referencesElement.style = "margin-top: 12px;";
-        referencesElement.append(
-          "References: ",
-          ...meaning.references.flatMap((reference) => {
-            const referenceElement = document.createElement("span");
-            referenceElement.textContent = reference;
-            return referenceElement;
-          })
-        );
-
-        meaningElement.append(
-          definitionShortElement,
-          glossesElement,
-          referencesElement
-        );
-
-        return meaningElement;
-      })
+  function buildView(documentData) {
+    return raw.div(
+      { margin: "44px 44px 0" },
+      raw.div(
+        raw.div({ fontSize: "36px" }, raw.text`${documentData.lemma}`),
+        raw.div(
+          { marginTop: "32px", fontWeight: "bold", fontStyle: "italic" },
+          raw.text`${documentData.baseForms[0].partsOfSpeech[0]}`
+        ),
+        raw.ol(
+          { margin: "24px 0 0 12px" },
+          documentData.baseForms[0].meanings.map((meaning) =>
+            raw.li(
+              { marginBottom: "32px" },
+              raw.div(raw.text`${meaning.senses[0].definitionShort}`),
+              raw.div(
+                {
+                  marginTop: "8px",
+                  fontWeight: "bold",
+                },
+                raw.text`Glosses: ${meaning.senses[0].glosses.join(", ")}`
+              ),
+              raw.div(
+                { marginTop: "12px" },
+                raw.text`References: `,
+                meaning.references.map((reference, index) => [
+                  index > 0 && raw.text`, `,
+                  raw.span(raw.text`${reference}`),
+                ])
+              )
+            )
+          )
+        )
+      )
     );
-
-    baseFormElement.append(
-      lemmaElement,
-      partOfSpeechElement,
-      meaningElementsList
-    );
-    entryContainerElement.append(baseFormElement);
-    main.replaceChildren(entryContainerElement);
   }
 })();
